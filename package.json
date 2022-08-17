@@ -11,12 +11,14 @@
   "dependencies": {
     "@fastify/env": "^4.1.0",
     "@fastify/jwt": "^6.3.2",
+    "@fastify/oauth2": "^6.0.0",
     "@fastify/swagger": "^7.4.1",
     "@prisma/client": "^4.1.1",
     "bcrypt": "^5.0.1",
     "fastify": "^4.3.0",
     "fastify-zod": "^1.1.0",
     "fluent-json-schema": "^3.1.0",
+    "google-auth-library": "^8.2.0",
     "pino-pretty": "^9.0.0",
     "zod": "^3.17.10",
     "zod-to-json-schema": "^3.17.1"

@@ -3,6 +3,7 @@ import {
   registerUserHandler,
   loginHandler,
   getUsersHandler,
+  googleAuthHandler,
 } from "./user.controller";
 import { $ref } from "./user.schema";
 
@@ -41,6 +42,7 @@ async function userRoutes(server: FastifyInstance) {
     },
     getUsersHandler
   );
+  server.get("/login/google/callback", {}, googleAuthHandler);
 }
 
 export default userRoutes;

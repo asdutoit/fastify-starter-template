@@ -5,6 +5,8 @@ import {
   verifyPassword,
   findUsers,
 } from "./user.service";
+import { OAuth2Client } from "google-auth-library";
+import oauthPlugin from "@fastify/oauth2";
 import { CreateUserInput, LoginInput } from "./user.schema";
 import { server } from "../../src/app";
 
@@ -61,4 +63,21 @@ async function getUsersHandler(request: FastifyRequest, reply: FastifyReply) {
   return users;
 }
 
-export { registerUserHandler, loginHandler, getUsersHandler };
+async function googleAuthHandler(
+  this: any,
+  request: FastifyRequest,
+  reply: FastifyReply
+) {
+  const token = await this.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(
+    request
+  );
+  console.log("TOKEN", token.token);
+  reply.send({ access_token: token.token });
+}
+
+export {
+  registerUserHandler,
+  loginHandler,
+  getUsersHandler,
+  googleAuthHandler,
+};

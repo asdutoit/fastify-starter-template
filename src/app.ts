@@ -6,8 +6,8 @@ import productRoutes from "../modules/product/product.route";
 import { userSchemas } from "../modules/user/user.schema";
 import { productSchemas } from "../modules/product/product.schema";
 import swagger from "@fastify/swagger";
-import { withRefResolver } from "fastify-zod";
 import S from "fluent-json-schema";
+const oauthPlugin = require("@fastify/oauth2");
 import { version } from "../package.json";
 
 let environment = process.env.NODE_ENV || "development";
@@ -32,7 +32,7 @@ export const server = Fastify({
               translateTime: "HH:MM:ss Z",
               ignore: "pid,hostname",
               colorize: true,
-              singleLine: true,
+              // singleLine: true,
             },
           }
         : undefined,
@@ -57,6 +57,19 @@ declare module "@fastify/jwt" {
 
 server.register(fastifyEnv, options);
 server.register(fjwt, { secret: process.env.SECRET });
+server.register(oauthPlugin, {
+  name: "googleOAuth2",
+  scope: ["profile", "email"],
+  credentials: {
+    client: {
+      id: process.env.GOOGLE_CLIENT_ID,
+      secret: process.env.GOOGLE_CLIENT_SECRET,
+    },
+    auth: oauthPlugin.GOOGLE_CONFIGURATION,
+  },
+  startRedirectPath: "/login/google",
+  callbackUri: "http://localhost:3000/api/users/login/google/callback",
+});
 
 server.decorate(
   "authenticate",
